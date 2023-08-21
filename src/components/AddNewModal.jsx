@@ -1,12 +1,35 @@
+import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { postUsers } from "../services/UserServices";
+import { toast } from "react-toastify";
 
-function AddNewModal({ handleClose, handleShow }) {
-  const handleSave = (e) => {
-    console.log(e);
+function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    job: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let res = await postUsers(formData);
+      handleClose();
+      setFormData({ name: "", job: "" });
+      toast.success("A User is created succeed!");
+      hanleUpdateUser({ id: res.id, first_name: res.name });
+    } catch (e) {
+      toast.error(e);
+    }
   };
-  const handleFormValues = (e) => {
-    console.log("e :", e.target.value);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+
   return (
     <>
       <Modal show={handleShow} onHide={handleClose}>
@@ -15,15 +38,27 @@ function AddNewModal({ handleClose, handleShow }) {
         </Modal.Header>
 
         <Modal.Body>
-          <Form onChange={handleFormValues}>
+          <Form>
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Name" name="name" />
+              <Form.Control
+                type="text"
+                placeholder="Enter Name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="job">
               <Form.Label>Job</Form.Label>
-              <Form.Control type="text" placeholder="Enter Job" name="job" />
+              <Form.Control
+                type="text"
+                placeholder="Enter Job"
+                name="job"
+                value={formData.job}
+                onChange={handleInputChange}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -31,7 +66,9 @@ function AddNewModal({ handleClose, handleShow }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Save Changes</Button>
+          <Button onClick={handleSubmit} variant="primary">
+            Save Changes
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

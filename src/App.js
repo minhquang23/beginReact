@@ -1,4 +1,3 @@
-import "./App.scss";
 import TableUsers from "./components/TableUsers";
 import Header from "./components/Header";
 import Container from "react-bootstrap/Container";

@@ -4,15 +4,25 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
 import "../App.scss";
+import { Button } from "react-bootstrap";
+import EditUserModal from "./EditUserModal";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [dataUser, setDataUser] = useState({});
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showAddNew, setShowAddNew] = useState(false);
+  const handleCloseAddNew = () => setShowAddNew(false);
+  const handleShowAddNew = () => setShowAddNew(true);
+
+  const [showEditUser, setShowEditUser] = useState(false);
+  const handleCloseEditUser = () => setShowEditUser(false);
+  const handleShowEditUser = (user) => {
+    setDataUser(user);
+    setShowEditUser(true);
+  };
 
   useEffect(() => {
     getUsers();
@@ -31,7 +41,7 @@ const TableUsers = (props) => {
     getUsers(+e.selected + 1);
   };
 
-  const hanleUpdateUser = (user) => {
+  const handleUpdateUser = (user) => {
     setListUsers([user, ...listUsers]);
   };
   return (
@@ -48,7 +58,7 @@ const TableUsers = (props) => {
             <button className="btn btn-primary">Export</button>
           </div>
           <div className="add-new">
-            <button className="btn btn-success" onClick={handleShow}>
+            <button className="btn btn-success" onClick={handleShowAddNew}>
               Add new
             </button>
           </div>
@@ -57,11 +67,12 @@ const TableUsers = (props) => {
 
       <Table striped bordered hover variant="dark">
         <thead>
-          <tr>
+          <tr className="align-center">
             <th>ID</th>
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -69,11 +80,22 @@ const TableUsers = (props) => {
             listUsers.length > 0 &&
             listUsers.map((item, index) => {
               return (
-                <tr key={`user-${index}`}>
+                <tr key={`user-${index}`} className="align-center">
                   <td>{item.id}</td>
                   <td>{item.email}</td>
                   <td>{item.first_name}</td>
                   <td>{item.last_name}</td>
+                  <td>
+                    <div className="action-btn">
+                      <Button
+                        className="btn btn-info"
+                        onClick={() => handleShowEditUser(item)}
+                      >
+                        Edit
+                      </Button>
+                      <Button className="btn btn-danger">Delete</Button>
+                    </div>
+                  </td>
                 </tr>
               );
             })}
@@ -100,9 +122,15 @@ const TableUsers = (props) => {
       />
 
       <AddNewModal
-        handleClose={handleClose}
-        handleShow={show}
-        hanleUpdateUser={hanleUpdateUser}
+        handleClose={handleCloseAddNew}
+        handleShow={showAddNew}
+        handleUpdateUser={handleUpdateUser}
+      />
+
+      <EditUserModal
+        handleClose={handleCloseEditUser}
+        handleShow={showEditUser}
+        dataUser={dataUser}
       />
     </>
   );

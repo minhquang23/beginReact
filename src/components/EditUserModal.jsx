@@ -1,40 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { postUsers } from "../services/UserServices";
 import { toast } from "react-toastify";
 
-function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
+function EditUserModal({
+  handleClose,
+  handleShow,
+  handleUpdateUser,
+  dataUser,
+}) {
   const [formData, setFormData] = useState({
     name: "",
     job: "",
   });
-
-  const handleSubmit = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      let res = await postUsers(formData);
-      handleClose();
-      setFormData({ name: "", job: "" });
       toast.success("A User is created succeed!");
-      hanleUpdateUser({ id: res.id, first_name: res.name });
     } catch (e) {
       toast.error(e);
     }
   };
 
+  useEffect(() => {
+    if (handleShow) {
+      setFormData({ name: dataUser.first_name });
+    }
+  }, [dataUser]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    // setFormData((prevData) => ({
+    //   ...prevData,
+    //   [name]: value,
+    // }));
   };
 
   return (
     <>
       <Modal show={handleShow} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -57,7 +61,6 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
                 placeholder="Enter Job"
                 name="job"
                 value={formData.job}
-                onChange={handleInputChange}
               />
             </Form.Group>
           </Form>
@@ -66,8 +69,8 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={handleSubmit} variant="primary">
-            Create New
+          <Button onClick={handleEdit} variant="primary">
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -75,4 +78,4 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
   );
 }
 
-export default AddNewModal;
+export default EditUserModal;

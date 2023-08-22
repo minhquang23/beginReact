@@ -8,12 +8,10 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
     name: "",
     job: "",
   });
-  console.log("formData :", formData);
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
       let res = await editUser(formData);
-      console.log("res :", res);
       handleClose();
       toast.success("A User is edited succeed!");
       handleEditUser({ first_name: res.name, id: dataUser.id });
@@ -29,7 +27,6 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
   }, [dataUser]);
 
   const handleInputChange = (e) => {
-    console.log("e :", e);
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,

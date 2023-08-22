@@ -32,6 +32,7 @@ const TableUsers = (props) => {
 
   const getUsers = async (page) => {
     let res = await fetchAllUsers(page);
+    console.log("res :", res);
     if (res?.data) {
       setListUsers(res.data);
       setTotalUsers(res.total);
@@ -82,6 +83,7 @@ const TableUsers = (props) => {
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Job</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -95,6 +97,7 @@ const TableUsers = (props) => {
                   <td>{item.email}</td>
                   <td>{item.first_name}</td>
                   <td>{item.last_name}</td>
+                  <td>{item.job}</td>
                   <td>
                     <div className="action-btn">
                       <Button
@@ -116,7 +119,7 @@ const TableUsers = (props) => {
         nextLabel="next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
-        pageCount={totalPages}
+        pageCount={2}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         activeClassName="active"

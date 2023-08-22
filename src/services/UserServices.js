@@ -1,14 +1,18 @@
 import axios from "./customizeAxios";
 
 const fetchAllUsers = (page) => {
-  return axios.get(`/users?page=${page}`);
+  return axios.get(`/posts`, { page });
 };
 
 const postUsers = (data) => {
-  return axios.post(`/users`, data);
+  return axios.post(`/posts`, data);
 };
 
 const editUser = (data) => {
-  return axios.put(`users/2`, data);
+  return axios.put(`posts/1`, data);
 };
-export { fetchAllUsers, postUsers, editUser };
+
+const deleteUser = () => {
+  return axios.delete(`posts/1`);
+};
+export { fetchAllUsers, postUsers, editUser, deleteUser };

@@ -7,4 +7,8 @@ const fetchAllUsers = (page) => {
 const postUsers = (data) => {
   return axios.post(`/users`, data);
 };
-export { fetchAllUsers, postUsers };
+
+const editUser = (data) => {
+  return axios.put(`users/2`, data);
+};
+export { fetchAllUsers, postUsers, editUser };

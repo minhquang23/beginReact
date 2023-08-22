@@ -6,6 +6,7 @@ import AddNewModal from "./AddNewModal";
 import "../App.scss";
 import { Button } from "react-bootstrap";
 import EditUserModal from "./EditUserModal";
+import _ from "lodash";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -19,6 +20,7 @@ const TableUsers = (props) => {
 
   const [showEditUser, setShowEditUser] = useState(false);
   const handleCloseEditUser = () => setShowEditUser(false);
+
   const handleShowEditUser = (user) => {
     setDataUser(user);
     setShowEditUser(true);
@@ -44,6 +46,14 @@ const TableUsers = (props) => {
   const handleUpdateUser = (user) => {
     setListUsers([user, ...listUsers]);
   };
+
+  const handleEditUser = (user) => {
+    let cloneListUsers = _.cloneDeep(listUsers);
+    let index = listUsers.findIndex((item) => item.id === user.id);
+    cloneListUsers[index].first_name = user.first_name;
+    setListUsers([...cloneListUsers]);
+  };
+
   return (
     <>
       <div className="wrap-title">
@@ -131,6 +141,7 @@ const TableUsers = (props) => {
         handleClose={handleCloseEditUser}
         handleShow={showEditUser}
         dataUser={dataUser}
+        handleEditUser={handleEditUser}
       />
     </>
   );

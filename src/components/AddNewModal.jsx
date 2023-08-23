@@ -46,7 +46,12 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
 
   return (
     <>
-      <Modal show={handleShow} onHide={handleClose}>
+      <Modal
+        show={handleShow}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Add New User</Modal.Title>
         </Modal.Header>

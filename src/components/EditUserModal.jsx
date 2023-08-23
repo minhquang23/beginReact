@@ -49,7 +49,12 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
 
   return (
     <>
-      <Modal show={handleShow} onHide={handleClose}>
+      <Modal
+        show={handleShow}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>

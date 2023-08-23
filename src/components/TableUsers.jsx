@@ -32,6 +32,7 @@ const TableUsers = (props) => {
 
   const getUsers = async (handlePage) => {
     let res = await fetchAllUsers(handlePage);
+    console.log("res :", res);
     if (res?.data) {
       setListUsers(res.data);
       setTotalUsers(res.total);
@@ -39,13 +40,6 @@ const TableUsers = (props) => {
     }
   };
 
-  // const handlePageClick = (e) => {
-  //   const handlePage = {
-  //     _page: +e.selected + 1,
-  //     _limit: 6,
-  //   };
-  //   getUsers(handlePage);
-  // };
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
   };
@@ -55,13 +49,10 @@ const TableUsers = (props) => {
   };
 
   const handleEditUser = (user) => {
-    console.log("user :", user);
     let cloneListUsers = _.cloneDeep(listUsers);
     let index = cloneListUsers.findIndex((item) => {
-      console.log("item :", item);
       return item.id === user.id;
     });
-    console.log("index :", index);
     cloneListUsers[index].email = user.email;
     cloneListUsers[index].first_name = user.first_name;
     cloneListUsers[index].last_name = user.last_name;
@@ -105,23 +96,26 @@ const TableUsers = (props) => {
         <tbody>
           {listUsers &&
             listUsers.length > 0 &&
-            listUsers.map((item, index) => {
+            listUsers.map((user, index) => {
               return (
                 <tr key={`user-${index}`} className="align-center">
-                  <td>{item.id}</td>
-                  <td>{item.email}</td>
-                  <td>{item.first_name}</td>
-                  <td>{item.last_name}</td>
-                  <td>{item.job}</td>
+                  <td>{user.id}</td>
+                  <td>{user.email}</td>
+                  <td>{user.first_name}</td>
+                  <td>{user.last_name}</td>
+                  <td>{user.job}</td>
                   <td>
                     <div className="action-btn">
                       <Button
                         className="btn btn-info"
-                        onClick={() => handleShowEditUser(item)}
+                        onClick={() => handleShowEditUser(user)}
                       >
                         Edit
                       </Button>
-                      <Button className="btn btn-danger" onClick={handleDelete}>
+                      <Button
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(user)}
+                      >
                         Delete
                       </Button>
                     </div>
@@ -136,7 +130,7 @@ const TableUsers = (props) => {
         nextLabel="next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
-        pageCount={2}
+        pageCount={5}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         activeClassName="active"

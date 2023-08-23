@@ -30,9 +30,8 @@ const TableUsers = (props) => {
     getUsers();
   }, []);
 
-  const getUsers = async (page) => {
-    let res = await fetchAllUsers(page);
-    console.log("res :", res);
+  const getUsers = async (handlePage) => {
+    let res = await fetchAllUsers(handlePage);
     if (res?.data) {
       setListUsers(res.data);
       setTotalUsers(res.total);
@@ -40,6 +39,13 @@ const TableUsers = (props) => {
     }
   };
 
+  // const handlePageClick = (e) => {
+  //   const handlePage = {
+  //     _page: +e.selected + 1,
+  //     _limit: 6,
+  //   };
+  //   getUsers(handlePage);
+  // };
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
   };
@@ -49,12 +55,21 @@ const TableUsers = (props) => {
   };
 
   const handleEditUser = (user) => {
+    console.log("user :", user);
     let cloneListUsers = _.cloneDeep(listUsers);
-    let index = listUsers.findIndex((item) => item.id === user.id);
+    let index = cloneListUsers.findIndex((item) => {
+      console.log("item :", item);
+      return item.id === user.id;
+    });
+    console.log("index :", index);
+    cloneListUsers[index].email = user.email;
     cloneListUsers[index].first_name = user.first_name;
-    setListUsers([...cloneListUsers]);
+    cloneListUsers[index].last_name = user.last_name;
+    cloneListUsers[index].job = user.job;
+    setListUsers(cloneListUsers);
   };
 
+  const handleDelete = () => {};
   return (
     <>
       <div className="wrap-title">
@@ -106,7 +121,9 @@ const TableUsers = (props) => {
                       >
                         Edit
                       </Button>
-                      <Button className="btn btn-danger">Delete</Button>
+                      <Button className="btn btn-danger" onClick={handleDelete}>
+                        Delete
+                      </Button>
                     </div>
                   </td>
                 </tr>

@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 
 function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
   const [formData, setFormData] = useState({
-    name: "",
+    email: "",
+    first_name: "",
+    last_name: "",
     job: "",
   });
 
@@ -13,10 +15,22 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
     e.preventDefault();
     try {
       let res = await postUsers(formData);
+      console.log("res :", res);
       handleClose();
-      setFormData({ name: "", job: "" });
+      setFormData({
+        email: "",
+        first_name: "",
+        last_name: "",
+        job: "",
+      });
       toast.success("A User is created succeed!");
-      hanleUpdateUser({ id: res.id, first_name: res.name });
+      hanleUpdateUser({
+        id: res.data.id,
+        email: res.data.email,
+        first_name: res.data.first_name,
+        last_name: res.data.last_name,
+        job: res.data.job,
+      });
     } catch (e) {
       toast.error(e);
     }
@@ -39,13 +53,35 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
 
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="name">
-              <Form.Label>name</Form.Label>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter Email"
+                name="email"
+                value={formData.email || ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="first_name">
+              <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Name"
-                name="name"
-                value={formData.name}
+                placeholder="Enter First Name"
+                name="first_name"
+                value={formData.first_name || ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="last_name">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Last Name"
+                name="last_name"
+                value={formData.last_name || ""}
                 onChange={handleInputChange}
               />
             </Form.Group>
@@ -56,7 +92,7 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
                 type="text"
                 placeholder="Enter Job"
                 name="job"
-                value={formData.job}
+                value={formData.job || ""}
                 onChange={handleInputChange}
               />
             </Form.Group>

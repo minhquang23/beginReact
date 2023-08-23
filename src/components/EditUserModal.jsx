@@ -5,7 +5,9 @@ import { editUser } from "../services/UserServices";
 
 function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
   const [formData, setFormData] = useState({
-    name: "",
+    email: "",
+    first_name: "",
+    last_name: "",
     job: "",
   });
   const handleEdit = async (e) => {
@@ -14,7 +16,13 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
       let res = await editUser(formData);
       handleClose();
       toast.success("A User is edited succeed!");
-      handleEditUser({ first_name: res.name, id: dataUser.id });
+      handleEditUser({
+        id: res.data.id,
+        email: res.data.email,
+        first_name: res.data.first_name,
+        last_name: res.data.last_name,
+        job: res.data.job,
+      });
     } catch (e) {
       toast.error(e);
     }
@@ -22,7 +30,12 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
 
   useEffect(() => {
     if (handleShow) {
-      setFormData({ name: dataUser.first_name });
+      setFormData({
+        email: dataUser.email,
+        first_name: dataUser.first_name,
+        last_name: dataUser.last_name,
+        job: dataUser.job,
+      });
     }
   }, [dataUser]);
 
@@ -43,13 +56,35 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
 
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="name">
-              <Form.Label>name</Form.Label>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter Email"
+                name="email"
+                value={formData.email || ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="first_name">
+              <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Name"
-                name="name"
-                value={formData?.name || ""}
+                placeholder="Enter First Name"
+                name="first_name"
+                value={formData.first_name || ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="last_name">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Last Name"
+                name="last_name"
+                value={formData.last_name || ""}
                 onChange={handleInputChange}
               />
             </Form.Group>
@@ -60,7 +95,7 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
                 type="text"
                 placeholder="Enter Job"
                 name="job"
-                value={formData?.job || ""}
+                value={formData.job || ""}
                 onChange={handleInputChange}
               />
             </Form.Group>

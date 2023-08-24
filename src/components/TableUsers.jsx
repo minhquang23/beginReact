@@ -10,8 +10,6 @@ import _ from "lodash";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [dataUser, setDataUser] = useState({});
 
   const [showAddNew, setShowAddNew] = useState(false);
@@ -32,11 +30,8 @@ const TableUsers = (props) => {
 
   const getUsers = async (handlePage) => {
     let res = await fetchAllUsers(handlePage);
-    console.log("res :", res);
     if (res?.data) {
       setListUsers(res.data);
-      setTotalUsers(res.total);
-      setTotalPages(res.total_pages);
     }
   };
 
@@ -50,13 +45,11 @@ const TableUsers = (props) => {
 
   const handleEditUser = (user) => {
     let cloneListUsers = _.cloneDeep(listUsers);
-    let index = cloneListUsers.findIndex((item) => {
-      return item.id === user.id;
+    let index = listUsers.findIndex((item) => {
+      const abc = item.id === user.id;
+      return abc;
     });
-    cloneListUsers[index].email = user.email;
-    cloneListUsers[index].first_name = user.first_name;
-    cloneListUsers[index].last_name = user.last_name;
-    cloneListUsers[index].job = user.job;
+    cloneListUsers[index] = user;
     setListUsers(cloneListUsers);
   };
 

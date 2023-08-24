@@ -13,16 +13,10 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      let res = await editUser(formData);
+      let res = await editUser(dataUser.id, formData);
       handleClose();
       toast.success("A User is edited succeed!");
-      handleEditUser({
-        id: res.data.id,
-        email: res.data.email,
-        first_name: res.data.first_name,
-        last_name: res.data.last_name,
-        job: res.data.job,
-      });
+      handleEditUser(res.data);
     } catch (e) {
       toast.error(e);
     }

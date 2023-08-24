@@ -11,8 +11,8 @@ const postUsers = (data) => {
   return axios.post(`/posts`, data);
 };
 
-const editUser = (data) => {
-  return axios.put(`/posts/1`, data);
+const editUser = (id, data) => {
+  return axios.put(`/posts/${id}`, data);
 };
 
 const deleteUser = () => {

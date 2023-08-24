@@ -1,34 +1,6 @@
 {
   "posts": [
     {
-      "email": "eve.holt@reqres.in",
-      "first_name": "Eve Minh",
-      "last_name": "Holt",
-      "job": "Job4",
-      "id": 1
-    },
-    {
-      "email": "janet.weaver@reqres.in",
-      "first_name": "Janet",
-      "last_name": "Minh",
-      "job": "Job2",
-      "id": 2
-    },
-    {
-      "email": "emma.wong@reqres.in",
-      "first_name": "Emma",
-      "last_name": "Wong Quang",
-      "job": "Job3",
-      "id": 3
-    },
-    {
-      "id": 4,
-      "email": "eve.holt@reqres.in",
-      "first_name": "Eve",
-      "last_name": "Holt",
-      "job": "Job4"
-    },
-    {
       "id": 5,
       "email": "charles.morris@reqres.in",
       "first_name": "Charles",
@@ -69,48 +41,6 @@
       "first_name": "Byron",
       "last_name": "Fields",
       "job": "Job10"
-    },
-    {
-      "id": 11,
-      "email": "george.edwards@reqres.in",
-      "first_name": "George",
-      "last_name": "Edwards",
-      "job": "Job11"
-    },
-    {
-      "id": 12,
-      "email": "rachel.howell@reqres.in",
-      "first_name": "Rachel",
-      "last_name": "Howell",
-      "job": "Job12"
-    },
-    {
-      "email": "minhhq.hivetech@gmail.com",
-      "first_name": "Quang Minh",
-      "last_name": "Huỳnh",
-      "job": "abc",
-      "id": 13
-    },
-    {
-      "email": "minhhq.hivetech@gmail.com",
-      "first_name": "Quang Minh",
-      "last_name": "Huỳnh",
-      "job": "abc",
-      "id": 14
-    },
-    {
-      "email": "minhhq.hivetech@gmail.com",
-      "first_name": "Quang Minh",
-      "last_name": "Huỳnh",
-      "job": "abc",
-      "id": 15
-    },
-    {
-      "email": "minhhq.hivetech@gmail.com",
-      "first_name": "Quang Minh",
-      "last_name": "Huỳnh",
-      "job": "abc",
-      "id": 16
     }
   ]
 }

@@ -15,7 +15,7 @@ const editUser = (id, data) => {
   return axios.put(`/posts/${id}`, data);
 };
 
-const deleteUser = () => {
-  return axios.delete(`/posts/1`);
+const deleteUser = (id) => {
+  return axios.delete(`/posts/${id}`);
 };
 export { fetchAllUsers, postUsers, editUser, deleteUser };

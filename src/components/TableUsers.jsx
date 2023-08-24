@@ -1,12 +1,13 @@
+import "../App.scss";
 import Table from "react-bootstrap/Table";
+import _ from "lodash";
 import { fetchAllUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
-import "../App.scss";
-import { Button } from "react-bootstrap";
 import EditUserModal from "./EditUserModal";
-import _ from "lodash";
+import ConfirmModal from "./ConfirmModal";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -18,6 +19,9 @@ const TableUsers = (props) => {
 
   const [showEditUser, setShowEditUser] = useState(false);
   const handleCloseEditUser = () => setShowEditUser(false);
+
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDeleteUser = () => setShowDelete(false);
 
   const handleShowEditUser = (user) => {
     setDataUser(user);
@@ -53,7 +57,19 @@ const TableUsers = (props) => {
     setListUsers(cloneListUsers);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (user) => {
+    setDataUser(user);
+    setShowDelete(true);
+  };
+
+  const handleDataDelete = (user) => {
+    let cloneListUsers = _.cloneDeep(listUsers);
+    cloneListUsers = cloneListUsers.filter((item) => {
+      return item.id !== user.id;
+    });
+    setListUsers(cloneListUsers);
+  };
+
   return (
     <>
       <div className="wrap-title">
@@ -149,6 +165,13 @@ const TableUsers = (props) => {
         handleShow={showEditUser}
         dataUser={dataUser}
         handleEditUser={handleEditUser}
+      />
+
+      <ConfirmModal
+        handleClose={handleCloseDeleteUser}
+        handleShow={showDelete}
+        dataUser={dataUser}
+        handleDataDelete={handleDataDelete}
       />
     </>
   );

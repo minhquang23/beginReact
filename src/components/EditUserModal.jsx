@@ -31,7 +31,7 @@ function EditUserModal({ handleClose, handleShow, handleEditUser, dataUser }) {
         job: dataUser.job,
       });
     }
-  }, [dataUser]);
+  }, [dataUser, handleShow]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -1,15 +1,14 @@
 import "../App.scss";
-import Table from "react-bootstrap/Table";
 import _ from "lodash";
 import { fetchAllUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
 import EditUserModal from "./EditUserModal";
 import ConfirmModal from "./ConfirmModal";
 
-const TableUsers = (props) => {
+const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
   const [dataUser, setDataUser] = useState({});
 
@@ -22,6 +21,15 @@ const TableUsers = (props) => {
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDeleteUser = () => setShowDelete(false);
+
+  const [sortBy, setSortBy] = useState("asc");
+  console.log("sortBy :", sortBy);
+  const [sortField, setSortField] = useState("id");
+  console.log("sortField :", sortField);
+  const handleSort = (sortBy, sortField) => {
+    setSortBy(sortBy);
+    setSortField(sortField);
+  };
 
   const handleShowEditUser = (user) => {
     setDataUser(user);
@@ -94,11 +102,69 @@ const TableUsers = (props) => {
       <Table striped bordered hover variant="dark">
         <thead>
           <tr className="align-center">
-            <th>ID</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Job</th>
+            <th>
+              <div className="sort-wrap">
+                <span>ID</span>
+                <span className="sort-icon">
+                  <i
+                    className="fa-solid fa-sort-up"
+                    onClick={() => handleSort("asc", "id")}
+                  ></i>
+                  <i
+                    className="fa-solid fa-sort-down"
+                    onClick={() => handleSort("desc", "id")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <span>Email</span>
+            </th>
+            <th>
+              <div className="sort-wrap">
+                <span>First Name</span>{" "}
+                <span className="sort-icon">
+                  <i
+                    className="fa-solid fa-sort-up"
+                    onClick={() => handleSort("asc", "first_name")}
+                  ></i>
+                  <i
+                    className="fa-solid fa-sort-down"
+                    onClick={() => handleSort("desc", "first_name")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div className="sort-wrap">
+                <span>Last Name</span>{" "}
+                <span className="sort-icon">
+                  <i
+                    className="fa-solid fa-sort-up"
+                    onClick={() => handleSort("asc", "last_name")}
+                  ></i>
+                  <i
+                    className="fa-solid fa-sort-down"
+                    onClick={() => handleSort("desc", "last_name")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div className="sort-wrap">
+                <span>Job</span>
+                <span className="sort-icon">
+                  <i
+                    className="fa-solid fa-sort-up"
+                    onClick={() => handleSort("asc", "job")}
+                  ></i>
+                  <i
+                    className="fa-solid fa-sort-down"
+                    onClick={() => handleSort("desc", "job")}
+                  ></i>
+                </span>
+              </div>
+            </th>
             <th>Actions</th>
           </tr>
         </thead>

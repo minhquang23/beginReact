@@ -36,3 +36,24 @@ code {
   justify-content: center;
   gap: 10px;
 }
+
+.sort-wrap {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  line-height: 22px;
+  .sort-icon {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+    i {
+      cursor: pointer;
+
+      height: 4px;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}

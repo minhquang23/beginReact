@@ -23,12 +23,13 @@ const TableUsers = () => {
   const handleCloseDeleteUser = () => setShowDelete(false);
 
   const [sortBy, setSortBy] = useState("asc");
-  console.log("sortBy :", sortBy);
   const [sortField, setSortField] = useState("id");
-  console.log("sortField :", sortField);
   const handleSort = (sortBy, sortField) => {
     setSortBy(sortBy);
     setSortField(sortField);
+    let cloneListUsers = _.cloneDeep(listUsers);
+    cloneListUsers = _.orderBy(cloneListUsers, [sortField], [sortBy]);
+    setListUsers(cloneListUsers);
   };
 
   const handleShowEditUser = (user) => {

@@ -1,5 +1,5 @@
 import "../App.scss";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 import { fetchAllUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
@@ -9,51 +9,45 @@ import EditUserModal from "./EditUserModal";
 import ConfirmModal from "./ConfirmModal";
 
 const TableUsers = () => {
+  //---fetch Data Users---
+  const [data, setData] = useState("");
   const [listUsers, setListUsers] = useState([]);
   const [dataUser, setDataUser] = useState({});
-
-  const [showAddNew, setShowAddNew] = useState(false);
-  const handleCloseAddNew = () => setShowAddNew(false);
-  const handleShowAddNew = () => setShowAddNew(true);
-
-  const [showEditUser, setShowEditUser] = useState(false);
-  const handleCloseEditUser = () => setShowEditUser(false);
-
-  const [showDelete, setShowDelete] = useState(false);
-  const handleCloseDeleteUser = () => setShowDelete(false);
-
-  const [sortBy, setSortBy] = useState("asc");
-  const [sortField, setSortField] = useState("id");
-  const handleSort = (sortBy, sortField) => {
-    setSortBy(sortBy);
-    setSortField(sortField);
-    let cloneListUsers = _.cloneDeep(listUsers);
-    cloneListUsers = _.orderBy(cloneListUsers, [sortField], [sortBy]);
-    setListUsers(cloneListUsers);
-  };
-
-  const handleShowEditUser = (user) => {
-    setDataUser(user);
-    setShowEditUser(true);
-  };
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    getUsers(page);
+  }, [page]);
 
   const getUsers = async (handlePage) => {
     let res = await fetchAllUsers(handlePage);
     if (res?.data) {
       setListUsers(res.data);
+      setData(res.data);
     }
   };
 
   const handlePageClick = (e) => {
-    getUsers(+e.selected + 1);
+    // getUsers(+e.selected + 1);
+    setPage(+e.selected + 1);
   };
+
+  //---handle Add User---
+  const [showAddNew, setShowAddNew] = useState(false);
+  const handleCloseAddNew = () => setShowAddNew(false);
+  const handleShowAddNew = () => setShowAddNew(true);
 
   const handleUpdateUser = (user) => {
     setListUsers([user, ...listUsers]);
+  };
+
+  //---handle Edit User---
+  const [showEditUser, setShowEditUser] = useState(false);
+  const handleCloseEditUser = () => setShowEditUser(false);
+
+  const handleShowEditUser = (user) => {
+    setDataUser(user);
+    setShowEditUser(true);
   };
 
   const handleEditUser = (user) => {
@@ -66,6 +60,9 @@ const TableUsers = () => {
     setListUsers(cloneListUsers);
   };
 
+  //---handle Delete---
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDeleteUser = () => setShowDelete(false);
   const handleDelete = (user) => {
     setDataUser(user);
     setShowDelete(true);
@@ -79,11 +76,39 @@ const TableUsers = () => {
     setListUsers(cloneListUsers);
   };
 
+  //---handle Sort---
+  // const [sortBy, setSortBy] = useState("asc");
+  // const [sortField, setSortField] = useState("id");
+  const handleSort = (sortBy, sortField) => {
+    // setSortBy(sortBy);
+    // setSortField(sortField);
+    let cloneListUsers = _.cloneDeep(listUsers);
+    cloneListUsers = _.orderBy(cloneListUsers, [sortField], [sortBy]);
+    setListUsers(cloneListUsers);
+  };
+
+  //---handle search---
+  const handleChangeSearch = debounce((value) => {
+    let cloneListUsers = _.cloneDeep(data);
+    if (value) {
+      cloneListUsers = cloneListUsers.filter((item) =>
+        item.email.includes(value)
+      );
+      setListUsers(cloneListUsers);
+    } else {
+      getUsers(page);
+    }
+  }, 1000);
+
   return (
     <>
       <div className="wrap-title">
         <div className="my-3">
           <h5>List Users:</h5>
+          <input
+            placeholder="Please enter keyword"
+            onChange={(e) => handleChangeSearch(e?.target.value)}
+          />
         </div>
         <div className="wrap-btn">
           <div className="import">

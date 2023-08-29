@@ -1,8 +1,5 @@
 import axios from "./customizeAxios";
 
-// const fetchAllUsers = (params) => {
-//   return axios.get(`/posts`, { params });
-// };
 const fetchAllUsers = (page) => {
   return axios.get(`/posts?_page=${page}`);
 };

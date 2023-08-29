@@ -3,7 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { postUsers } from "../services/UserServices";
 import { toast } from "react-toastify";
 
-function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
+function AddNewModal({ handleClose, handleShow, handleUpdateUser }) {
   const [formData, setFormData] = useState({
     email: "",
     first_name: "",
@@ -15,7 +15,6 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
     e.preventDefault();
     try {
       let res = await postUsers(formData);
-      console.log("res :", res);
       handleClose();
       setFormData({
         email: "",
@@ -24,7 +23,7 @@ function AddNewModal({ handleClose, handleShow, hanleUpdateUser }) {
         job: "",
       });
       toast.success("A User is created succeed!");
-      hanleUpdateUser({
+      handleUpdateUser({
         id: res.data.id,
         email: res.data.email,
         first_name: res.data.first_name,

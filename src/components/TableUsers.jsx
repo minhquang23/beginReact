@@ -3,6 +3,7 @@ import _, { debounce } from "lodash";
 import { fetchAllUsers, searchUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import { CSVLink, CSVDownload } from "react-csv";
 import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
 import EditUserModal from "./EditUserModal";
@@ -112,14 +113,26 @@ const TableUsers = () => {
         </div>
         <div className="wrap-btn">
           <div className="import">
-            <button className="btn btn-warning">Import</button>
+            <label htmlFor="test" className="btn btn-warning">
+              <input type="file" id="test" hidden />
+              <i class="fa-solid fa-file-import"></i>
+              <span className="btn-content">Import</span>
+            </label>
           </div>
           <div className="export">
-            <button className="btn btn-primary">Export</button>
+            <CSVLink
+              className="btn btn-primary"
+              data={listUsers}
+              filename="list-users"
+            >
+              <i class="fa-solid fa-file-export"></i>
+              <span className="btn-content">Export</span>
+            </CSVLink>
           </div>
           <div className="add-new">
             <button className="btn btn-success" onClick={handleShowAddNew}>
-              Add new
+              <i class="fa-solid fa-circle-plus"></i>
+              <span className="btn-content">Add new</span>
             </button>
           </div>
         </div>

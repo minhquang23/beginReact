@@ -15,4 +15,8 @@ const editUser = (id, data) => {
 const deleteUser = (id) => {
   return axios.delete(`/posts/${id}`);
 };
-export { fetchAllUsers, postUsers, editUser, deleteUser };
+
+const searchUsers = (keyword) => {
+  return axios.get(`/posts?q=${keyword}`);
+};
+export { fetchAllUsers, postUsers, editUser, deleteUser, searchUsers };

@@ -1,6 +1,6 @@
 import "../App.scss";
 import _, { debounce } from "lodash";
-import { fetchAllUsers } from "../services/UserServices";
+import { fetchAllUsers, searchUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
@@ -22,8 +22,8 @@ const TableUsers = () => {
   const getUsers = async (handlePage) => {
     let res = await fetchAllUsers(handlePage);
     if (res?.data) {
-      setListUsers(res.data);
       setData(res.data);
+      setListUsers(res.data);
     }
   };
 
@@ -51,7 +51,7 @@ const TableUsers = () => {
   };
 
   const handleEditUser = (user) => {
-    let cloneListUsers = _.cloneDeep(listUsers);
+    let cloneListUsers = _.cloneDeep(data);
     let index = listUsers.findIndex((item) => {
       const abc = item.id === user.id;
       return abc;
@@ -69,7 +69,7 @@ const TableUsers = () => {
   };
 
   const handleDataDelete = (user) => {
-    let cloneListUsers = _.cloneDeep(listUsers);
+    let cloneListUsers = _.cloneDeep(data);
     cloneListUsers = cloneListUsers.filter((item) => {
       return item.id !== user.id;
     });
@@ -88,13 +88,13 @@ const TableUsers = () => {
   };
 
   //---handle search---
-  const handleChangeSearch = debounce((value) => {
-    let cloneListUsers = _.cloneDeep(data);
+  const handleChangeSearch = debounce(async (value) => {
+    // let cloneListUsers = _.cloneDeep(data);
     if (value) {
-      cloneListUsers = cloneListUsers.filter((item) =>
-        item.email.includes(value)
-      );
-      setListUsers(cloneListUsers);
+      // cloneListUsers = cloneListUsers.filter((item) =>
+      //   item.email.includes(value));
+      let res = await searchUsers(value);
+      setListUsers(res.data);
     } else {
       getUsers(page);
     }

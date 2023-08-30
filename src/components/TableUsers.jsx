@@ -8,6 +8,8 @@ import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
 import EditUserModal from "./EditUserModal";
 import ConfirmModal from "./ConfirmModal";
+import Papa from "papaparse";
+import { toast } from "react-toastify";
 
 const TableUsers = () => {
   //---fetch Data Users---
@@ -104,12 +106,10 @@ const TableUsers = () => {
   //---handle Export---
   const [dataExport, setDataExport] = useState([]);
   const getExport = (event, done) => {
-    console.log("done :", done);
-    console.log("event :", event);
     let result = [];
     if (listUsers && listUsers.length > 0) {
       result.push(["Id", "Email", "First name", "Last name"]);
-      listUsers.map((item, index) => {
+      listUsers.map((item) => {
         let arr = [];
         arr[0] = item.id;
         arr[1] = item.email;
@@ -122,6 +122,50 @@ const TableUsers = () => {
     }
   };
 
+  //---handle Import---
+  const handleImport = (e) => {
+    if (e.target?.files[0]) {
+      let file = e.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Only accept CSV file!");
+        return;
+      }
+      Papa.parse(file, {
+        // header: true,
+        complete: function (results) {
+          let rawCsv = results.data;
+          if (rawCsv.length > 0) {
+            if (rawCsv[0] && rawCsv.length === 3) {
+              if (
+                rawCsv[0][0] === "Email" &&
+                rawCsv[0][1] === "First name" &&
+                rawCsv[0][2] === "Last name"
+              ) {
+                let result = [];
+                rawCsv.map((item, index) => {
+                  if (index > 0) {
+                    let obj = {};
+                    obj.email = item[0];
+                    obj.first_name = item[1];
+                    obj.last_name = item[2];
+                    result.push(obj);
+                  }
+                });
+                setListUsers(result, ...listUsers);
+              } else {
+                toast.error("Please check again Header!");
+              }
+            } else {
+              toast.error("Header has only Email, First name, Last name!");
+            }
+          } else {
+            toast.error("Not found data on CSV file!");
+          }
+        },
+      });
+    }
+  };
+
   return (
     <>
       <div className="wrap-title">
@@ -129,13 +173,18 @@ const TableUsers = () => {
           <h5>List Users:</h5>
           <input
             placeholder="Please enter keyword"
-            onChange={(e) => handleChangeSearch(e?.target.value)}
+            onChange={(e) => handleChangeSearch(e?.target?.value)}
           />
         </div>
         <div className="wrap-btn">
           <div className="import">
             <label htmlFor="test" className="btn btn-warning">
-              <input type="file" id="test" hidden />
+              <input
+                type="file"
+                id="test"
+                hidden
+                onChange={(e) => handleImport(e)}
+              />
               <i className="fa-solid fa-file-import"></i>
               <span className="btn-content">Import</span>
             </label>

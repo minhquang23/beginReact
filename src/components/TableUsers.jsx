@@ -3,7 +3,7 @@ import _, { debounce } from "lodash";
 import { fetchAllUsers, searchUsers } from "../services/UserServices";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import ReactPaginate from "react-paginate";
 import AddNewModal from "./AddNewModal";
 import EditUserModal from "./EditUserModal";
@@ -101,6 +101,27 @@ const TableUsers = () => {
     }
   }, 1000);
 
+  //---handle Export---
+  const [dataExport, setDataExport] = useState([]);
+  const getExport = (event, done) => {
+    console.log("done :", done);
+    console.log("event :", event);
+    let result = [];
+    if (listUsers && listUsers.length > 0) {
+      result.push(["Id", "Email", "First name", "Last name"]);
+      listUsers.map((item, index) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
+
   return (
     <>
       <div className="wrap-title">
@@ -115,23 +136,25 @@ const TableUsers = () => {
           <div className="import">
             <label htmlFor="test" className="btn btn-warning">
               <input type="file" id="test" hidden />
-              <i class="fa-solid fa-file-import"></i>
+              <i className="fa-solid fa-file-import"></i>
               <span className="btn-content">Import</span>
             </label>
           </div>
           <div className="export">
             <CSVLink
               className="btn btn-primary"
-              data={listUsers}
               filename="list-users"
+              data={dataExport}
+              asyncOnClick={true}
+              onClick={getExport}
             >
-              <i class="fa-solid fa-file-export"></i>
+              <i className="fa-solid fa-file-export"></i>
               <span className="btn-content">Export</span>
             </CSVLink>
           </div>
           <div className="add-new">
             <button className="btn btn-success" onClick={handleShowAddNew}>
-              <i class="fa-solid fa-circle-plus"></i>
+              <i className="fa-solid fa-circle-plus"></i>
               <span className="btn-content">Add new</span>
             </button>
           </div>

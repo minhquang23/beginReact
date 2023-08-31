@@ -3,7 +3,8 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import Container from "react-bootstrap/Container";
 import { ToastContainer } from "react-toastify";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/users" element={<TableUsers />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Container>
       </div>

@@ -1,5 +1,12 @@
+i {
+  cursor: pointer;
+}
+
 //---Login---
 .login-container {
+  button:disabled {
+    cursor: not-allowed;
+  }
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -20,7 +27,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    input {
+    .input-item {
       line-height: 60px;
       border-radius: 11px;
       margin-bottom: 8px;
@@ -28,6 +35,17 @@
       outline: none;
       &:hover {
         background-color: rgb(255, 247, 237);
+      }
+    }
+    .password {
+      position: relative;
+      .password-input {
+        width: 100%;
+      }
+      .fa-regular.fa-eye-slash {
+        position: absolute;
+        top: 24px;
+        right: 10px;
       }
     }
   }
@@ -45,10 +63,11 @@
     line-height: 40px;
     border-radius: 11px;
     font-weight: 500;
+    cursor: pointer;
   }
   .go-back {
     line-height: 40px;
-    i {
+    .fa-angle-left {
       margin-right: 3px;
       position: relative;
       top: 1px;

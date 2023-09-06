@@ -115,7 +115,7 @@ const TableUsers = () => {
         arr[1] = item.email;
         arr[2] = item.first_name;
         arr[3] = item.last_name;
-        result.push(arr);
+        return result.push(arr);
       });
       setDataExport(result);
       done();
@@ -150,6 +150,7 @@ const TableUsers = () => {
                     obj.last_name = item[2];
                     result.push(obj);
                   }
+                  return result;
                 });
                 setListUsers(result, ...listUsers);
               } else {

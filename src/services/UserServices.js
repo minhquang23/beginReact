@@ -1,5 +1,5 @@
 import axios from "./customizeAxios";
-import { default as axiosDefault } from "axios";
+import { default as axiosLogin } from "./customizeAxiosLogin";
 
 const fetchAllUsers = (page) => {
   return axios.get(`/posts?_page=${page}`);
@@ -22,7 +22,7 @@ const searchUsers = (keyword) => {
 };
 
 const loginApi = (account) => {
-  return axiosDefault.post("https://reqres.in/api/login", account);
+  return axiosLogin.post("/api/login", account);
 };
 export {
   fetchAllUsers,

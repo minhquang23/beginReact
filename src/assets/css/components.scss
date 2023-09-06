@@ -64,6 +64,10 @@ i {
     border-radius: 11px;
     font-weight: 500;
     cursor: pointer;
+
+    .fa-spinner {
+      margin-right: 10px;
+    }
   }
   .go-back {
     line-height: 40px;

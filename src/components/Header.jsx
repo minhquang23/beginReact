@@ -1,16 +1,20 @@
+import "../assets/css/components.scss";
+import logoApp from "../assets/img/logo512.png";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import logoApp from "../assets/img/logo512.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Header = (props) => {
   const navigate = useNavigate();
+  const { logoutContext, user } = useContext(UserContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logoutContext();
     navigate("/login");
     toast.success("Logout succeed!");
   };
@@ -29,36 +33,47 @@ const Header = (props) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <NavLink to={"/"} className={"nav-link"}>
-              Home
-            </NavLink>
-            <NavLink to={"/users"} className={"nav-link"}>
-              Manage Users
-            </NavLink>
-          </Nav>
-          <Nav
-            className="setting"
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            <i className="fa-solid fa-gear"></i>
-            <NavDropdown title="Setting" id="basic-nav-dropdown">
-              <div className="login">
-                <NavLink to="/login" className={"nav-link"}>
-                  Login
-                </NavLink>
-              </div>
-              <div className="logout">
-                <NavLink
-                  to="/login"
-                  className={"nav-link"}
-                  onClick={handleLogout}
+          {user?.auth ||
+            (window.location.pathname === "/" && (
+              <>
+                <Nav className="me-auto">
+                  <NavLink to={"/"} className={"nav-link"}>
+                    Home
+                  </NavLink>
+                  <NavLink to={"/users"} className={"nav-link"}>
+                    Manage Users
+                  </NavLink>
+                </Nav>
+                <Nav
+                  className="setting"
+                  style={{ display: "flex", alignItems: "center" }}
                 >
-                  Logout
-                </NavLink>
-              </div>
-            </NavDropdown>
-          </Nav>
+                  {user?.email && (
+                    <span className="dropdown-item">Welcome {user.email}</span>
+                  )}
+                  <i className="fa-solid fa-gear"></i>
+                  <NavDropdown title="Setting" id="basic-nav-dropdown">
+                    <div className="logout">
+                      <NavLink
+                        to="/login"
+                        className={"nav-link"}
+                        onClick={handleLogout}
+                      >
+                        <i className="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                      </NavLink>
+                    </div>
+
+                    <div className="login">
+                      <NavLink to="/login" className={"nav-link"}>
+                        <i className="fa-solid fa-right-to-bracket"></i>
+                        Login
+                      </NavLink>
+                    </div>
+                  </NavDropdown>
+                </Nav>
+              </>
+            ))}
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -3,13 +3,16 @@ import "../assets/css/components.scss";
 import { loginApi } from "../services/UserServices";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [disable, setDisable] = useState(false);
+  const { loginContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   //---handleLogin---
@@ -26,7 +29,7 @@ const Login = () => {
         };
         let res = await loginApi(account);
         if (res?.data?.token) {
-          localStorage.setItem("token", res?.data?.token);
+          loginContext(email, res?.data?.token);
           navigate("/");
           toast.success("Login succeed!");
         } else {
@@ -48,7 +51,7 @@ const Login = () => {
       navigate("/");
       toast.warn("Logined!");
     }
-  });
+  }, []);
 
   //---handleLoadingButton---
   const handleButtonLogin = () => {
@@ -98,7 +101,9 @@ const Login = () => {
 
       <div className="go-back">
         <i className="fa-solid fa-angle-left fa-xs"></i>
-        <span className="go-back-content">Go back</span>
+        <Link className="go-back-content" to="/" style={{ color: "black" }}>
+          Go back
+        </Link>
       </div>
     </div>
   );

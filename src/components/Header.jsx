@@ -39,9 +39,11 @@ const Header = (props) => {
                 <NavLink to={"/"} className={"nav-link"}>
                   Home
                 </NavLink>
-                <NavLink to={"/users"} className={"nav-link"}>
-                  Manage Users
-                </NavLink>
+                {user?.auth && (
+                  <NavLink to={"/users"} className={"nav-link"}>
+                    Manage Users
+                  </NavLink>
+                )}
               </Nav>
               <Nav
                 className="setting"

@@ -101,7 +101,11 @@ const Login = () => {
 
       <div className="go-back">
         <i className="fa-solid fa-angle-left fa-xs"></i>
-        <Link className="go-back-content" to="/" style={{ color: "black" }}>
+        <Link
+          className="go-back-content"
+          to="/"
+          style={{ color: "black", textDecoration: "none" }}
+        >
           Go back
         </Link>
       </div>

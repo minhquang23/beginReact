@@ -169,10 +169,11 @@ const TableUsers = () => {
 
   return (
     <>
-      <div className="wrap-title">
+      <div className="wrap-title d-sm-flex">
         <div className="my-3">
           <h5>List Users:</h5>
           <input
+            className="col-12 col-sm-4"
             placeholder="Please enter keyword"
             onChange={(e) => handleChangeSearch(e?.target?.value)}
           />

@@ -24,7 +24,7 @@ const Login = () => {
       if (email && password) {
         const account = {
           email: "eve.holt@reqres.in",
-          // email: email,
+          // email: email.trim(),
           password: password,
         };
         let res = await loginApi(account);
@@ -62,6 +62,13 @@ const Login = () => {
     handleButtonLogin();
   }, [email, password]);
 
+  //---handlePress---
+  const handlePress = (e) => {
+    if (e?.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-container col-12 col-sm-4">
       <h3 className="title">Log in</h3>
@@ -84,6 +91,7 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => handlePress(e)}
           />
         </div>
       </div>
